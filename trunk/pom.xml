@@ -5,7 +5,7 @@
     <packaging>maven-plugin</packaging>
     <version>1.2.3-SNAPSHOT</version>
     <name>One-Jar Maven Plugin</name>
-    <url>http://dstovall.org</url>
+    <url>http://onejar-maven-plugin.googlecode.com/</url>
     <inceptionYear>2007</inceptionYear>
 
     <developers>
@@ -31,8 +31,8 @@
     </licenses>
 
     <scm>
-        <connection>scm:svn:svn://dstovall.org/svn/onejar-maven-plugin</connection>
-        <developerConnection>scm:svn:svn+ssh://dstovall.org/svn/onejar-maven-plugin</developerConnection>
+        <connection>scm:svn:http://onejar-maven-plugin.googlecode.com/svn/trunk</connection>
+        <developerConnection>scm:svn:https://onejar-maven-plugin.googlecode.com/svn/trunk</developerConnection>
     </scm>
 
     <build>
@@ -114,13 +114,18 @@
 
     <distributionManagement>
         <repository>
-            <id>maven@dstovall.org</id>
-            <name>dstovall.org Repository</name>
-            <url>sftp://dstovall.org/home/maven/repository</url>
+            <id>onejar-maven-plugin.googlecode.com</id>
+            <name>onejar-maven-plugin Google Code Repository</name>
+            <url>https://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
         </repository>
+        <snapshotRepository>
+            <id>onejar-maven-plugin.googlecode.com</id>
+            <name>onejar-maven-plugin Google Code SNAPSHOT Repository</name>
+            <url>https://onejar-maven-plugin.googlecode.com/svn/mavenrepo-snapshot</url>
+        </snapshotRepository>
         <site>
-            <id>maven@dstovall.org</id>
-            <url>sftp://dstovall.org/home/maven/sites/onejar-maven-plugin/</url>
+            <id>onejar-maven-plugin.googlecode.com</id>
+            <url>https://onejar-maven-plugin.googlecode.com/svn/mavensite/</url>
         </site>
     </distributionManagement>
 </project>

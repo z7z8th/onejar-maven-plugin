@@ -8,8 +8,17 @@ Technique A - In addition to a 'regular' executable jar file
 
     <pluginRepositories>
         <pluginRepository>
-            <id>dstovall.org</id>
-            <url>http://dstovall.org/maven2/</url>
+            <id>onejar-maven-plugin.googlecode.com</id>
+            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>false</enabled></snapshots>
+        </pluginRepository>
+        
+        <pluginRepository>
+            <id>onejar-maven-plugin.googlecode.com-snapshot</id>
+            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo-snapshot</url>
+            <releases><enabled>false</enabled></releases>
+            <snapshots><enabled>true</enabled></snapshots>
         </pluginRepository>
     </pluginRepositories>
 
@@ -28,7 +37,7 @@ Technique A - In addition to a 'regular' executable jar file
         <plugin>
             <groupId>org.dstovall</groupId>
                 <artifactId>onejar-maven-plugin</artifactId>
-                <version>1.2.1</version>
+                <version>1.2.3-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <configuration>
@@ -73,8 +82,17 @@ Technique B - Instead of a 'regular' executable jar file
 
     <pluginRepositories>
         <pluginRepository>
-            <id>dstovall.org</id>
-            <url>http://dstovall.org/maven2/</url>
+            <id>onejar-maven-plugin.googlecode.com</id>
+            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>false</enabled></snapshots>
+        </pluginRepository>
+        
+        <pluginRepository>
+            <id>onejar-maven-plugin.googlecode.com-snapshot</id>
+            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo-snapshot</url>
+            <releases><enabled>false</enabled></releases>
+            <snapshots><enabled>true</enabled></snapshots>
         </pluginRepository>
     </pluginRepositories>
 
@@ -82,7 +100,7 @@ Technique B - Instead of a 'regular' executable jar file
         <plugin>
             <groupId>org.dstovall</groupId>
                 <artifactId>onejar-maven-plugin</artifactId>
-                <version>1.2.1</version>
+                <version>1.2.3-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <configuration>

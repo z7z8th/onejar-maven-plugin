@@ -133,22 +133,6 @@
 </p>
 <div class="source"><pre>&lt;project&gt;
 
-    &lt;pluginRepositories&gt;
-        &lt;pluginRepository&gt;
-            &lt;id&gt;onejar-maven-plugin.googlecode.com&lt;/id&gt;
-            &lt;url&gt;http://onejar-maven-plugin.googlecode.com/svn/mavenrepo&lt;/url&gt;
-            &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;
-            &lt;snapshots&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/snapshots&gt;
-        &lt;/pluginRepository&gt;
-        
-        &lt;pluginRepository&gt;
-            &lt;id&gt;onejar-maven-plugin.googlecode.com-snapshot&lt;/id&gt;
-            &lt;url&gt;http://onejar-maven-plugin.googlecode.com/svn/mavenrepo-snapshot&lt;/url&gt;
-            &lt;releases&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/releases&gt;
-            &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/snapshots&gt;
-        &lt;/pluginRepository&gt;
-    &lt;/pluginRepositories&gt;
-
     &lt;build&gt;
         &lt;plugin&gt;
             &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
@@ -180,22 +164,6 @@
         &lt;/plugins&gt;
     &lt;/build&gt;
 
-&lt;/project&gt;</pre>
-</div>
-<div class="section"><h3>Caveat</h3>
-<p>I wanted to get the latest version of this plugin out, and as a result I haven't spend the time to remove the warning from OneJar about a missing main/main.jar when this technique is used. I will be fixing this in the future, just not right now.</p>
-<p>It (apparently) does not effect exectution and is just a warning.</p>
-<p>The full text of the error is:</p>
-<div class="source"><pre>Boot: Warning: Unable to locate main/main.jar in the JAR file target/myproject-1.0-SNAPSHOT.one-jar.jar</pre>
-</div>
-</div>
-</div>
-<div class="section"><h2>Technique B - Instead of a 'regular' executable jar file</h2>
-<p>Just drop the following code into your <b>pom.xml</b>
- and run <b>mvn package</b>
-</p>
-<div class="source"><pre>&lt;project&gt;
-
     &lt;pluginRepositories&gt;
         &lt;pluginRepository&gt;
             &lt;id&gt;onejar-maven-plugin.googlecode.com&lt;/id&gt;
@@ -211,6 +179,22 @@
             &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/snapshots&gt;
         &lt;/pluginRepository&gt;
     &lt;/pluginRepositories&gt;
+
+&lt;/project&gt;</pre>
+</div>
+<div class="section"><h3>Caveat</h3>
+<p>I wanted to get the latest version of this plugin out, and as a result I haven't spend the time to remove the warning from OneJar about a missing main/main.jar when this technique is used. I will be fixing this in the future, just not right now.</p>
+<p>It (apparently) does not effect exectution and is just a warning.</p>
+<p>The full text of the error is:</p>
+<div class="source"><pre>Boot: Warning: Unable to locate main/main.jar in the JAR file target/myproject-1.0-SNAPSHOT.one-jar.jar</pre>
+</div>
+</div>
+</div>
+<div class="section"><h2>Technique B - Instead of a 'regular' executable jar file</h2>
+<p>Just drop the following code into your <b>pom.xml</b>
+ and run <b>mvn package</b>
+</p>
+<div class="source"><pre>&lt;project&gt;
 
     &lt;build&gt;
         &lt;plugin&gt;
@@ -232,6 +216,22 @@
             &lt;/plugin&gt;
         &lt;/plugins&gt;
     &lt;/build&gt;
+
+    &lt;pluginRepositories&gt;
+        &lt;pluginRepository&gt;
+            &lt;id&gt;onejar-maven-plugin.googlecode.com&lt;/id&gt;
+            &lt;url&gt;http://onejar-maven-plugin.googlecode.com/svn/mavenrepo&lt;/url&gt;
+            &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;
+            &lt;snapshots&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/snapshots&gt;
+        &lt;/pluginRepository&gt;
+        
+        &lt;pluginRepository&gt;
+            &lt;id&gt;onejar-maven-plugin.googlecode.com-snapshot&lt;/id&gt;
+            &lt;url&gt;http://onejar-maven-plugin.googlecode.com/svn/mavenrepo-snapshot&lt;/url&gt;
+            &lt;releases&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/releases&gt;
+            &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/snapshots&gt;
+        &lt;/pluginRepository&gt;
+    &lt;/pluginRepositories&gt;
 
 &lt;/project&gt;</pre>
 </div>

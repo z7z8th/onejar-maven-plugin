@@ -6,22 +6,6 @@ Technique A - In addition to a 'regular' executable jar file
 +----------------------------------------------+
 <project>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>onejar-maven-plugin.googlecode.com</id>
-            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
-            <releases><enabled>true</enabled></releases>
-            <snapshots><enabled>false</enabled></snapshots>
-        </pluginRepository>
-        
-        <pluginRepository>
-            <id>onejar-maven-plugin.googlecode.com-snapshot</id>
-            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo-snapshot</url>
-            <releases><enabled>false</enabled></releases>
-            <snapshots><enabled>true</enabled></snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-
     <build>
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -53,6 +37,22 @@ Technique A - In addition to a 'regular' executable jar file
         </plugins>
     </build>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>onejar-maven-plugin.googlecode.com</id>
+            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>false</enabled></snapshots>
+        </pluginRepository>
+        
+        <pluginRepository>
+            <id>onejar-maven-plugin.googlecode.com-snapshot</id>
+            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo-snapshot</url>
+            <releases><enabled>false</enabled></releases>
+            <snapshots><enabled>true</enabled></snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
 </project>
 +----------------------------------------------+
 
@@ -80,22 +80,6 @@ Technique B - Instead of a 'regular' executable jar file
 +----------------------------------------------+
 <project>
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>onejar-maven-plugin.googlecode.com</id>
-            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
-            <releases><enabled>true</enabled></releases>
-            <snapshots><enabled>false</enabled></snapshots>
-        </pluginRepository>
-        
-        <pluginRepository>
-            <id>onejar-maven-plugin.googlecode.com-snapshot</id>
-            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo-snapshot</url>
-            <releases><enabled>false</enabled></releases>
-            <snapshots><enabled>true</enabled></snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-
     <build>
         <plugin>
             <groupId>org.dstovall</groupId>
@@ -116,6 +100,22 @@ Technique B - Instead of a 'regular' executable jar file
             </plugin>
         </plugins>
     </build>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>onejar-maven-plugin.googlecode.com</id>
+            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>false</enabled></snapshots>
+        </pluginRepository>
+        
+        <pluginRepository>
+            <id>onejar-maven-plugin.googlecode.com-snapshot</id>
+            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo-snapshot</url>
+            <releases><enabled>false</enabled></releases>
+            <snapshots><enabled>true</enabled></snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>
 +----------------------------------------------+

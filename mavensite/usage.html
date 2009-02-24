@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>onejar-maven-plugin - </title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+      </head>
+  <body class="composite">
+    <div id="banner">
+                  <a href="http://www.dstovall.org/onejar-maven-pluginr" id="bannerLeft">
+    
+                                    <img src="http://www.dstovall.org/onejar-maven-plugin/images/logo.png" alt="" />
+    
+            </a>
+                        <a href="http://www.dstovall.org/onejar-maven-plugin" id="bannerRight">
+    
+                                    <img src="http://www.dstovall.org/onejar-maven-plugin/images/logo-small.png" alt="" />
+    
+            </a>
+            <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+  
+  
+    
+            <div class="xleft">
+        Last Published: 2009-02-24
+                      </div>
+            <div class="xright">      
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+  
+  
+    
+                   <h5>Project</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="http://www.dstovall.org/onejar-maven-plugin/index.html" class="externalLink">home</a>
+          </li>
+              
+    <li class="none">
+                    <a href="http://www.dstovall.org/onejar-maven-plugin/usage.html" class="externalLink">usage</a>
+          </li>
+              
+    <li class="none">
+                    <a href="http://www.dstovall.org/onejar-maven-plugin/history.html" class="externalLink">history</a>
+          </li>
+          </ul>
+              <h5>Project Documentation</h5>
+            <ul>
+              
+                
+              
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="project-info.html">Project Information</a>
+                </li>
+              
+                
+              
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="project-reports.html">Project Reports</a>
+                </li>
+          </ul>
+                                           <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
+            <img alt="Built by Maven" src="./images/logos/maven-feather.png"></img>
+          </a>
+                       
+  
+
+  
+    
+  
+  
+    
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <div class="section"><h2>Technique A - In addition to a 'regular' executable jar file</h2>
+<p>Just drop the following code into your <b>pom.xml</b>
+ and run <b>mvn package</b>
+</p>
+<div class="source"><pre>&lt;project&gt;
+
+    &lt;pluginRepositories&gt;
+        &lt;pluginRepository&gt;
+            &lt;id&gt;onejar-maven-plugin.googlecode.com&lt;/id&gt;
+            &lt;url&gt;http://onejar-maven-plugin.googlecode.com/svn/mavenrepo&lt;/url&gt;
+            &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;
+            &lt;snapshots&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/snapshots&gt;
+        &lt;/pluginRepository&gt;
+        
+        &lt;pluginRepository&gt;
+            &lt;id&gt;onejar-maven-plugin.googlecode.com-snapshot&lt;/id&gt;
+            &lt;url&gt;http://onejar-maven-plugin.googlecode.com/svn/mavenrepo-snapshot&lt;/url&gt;
+            &lt;releases&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/releases&gt;
+            &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/snapshots&gt;
+        &lt;/pluginRepository&gt;
+    &lt;/pluginRepositories&gt;
+
+    &lt;build&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt;
+            &lt;configuration&gt;
+                &lt;archive&gt;
+                    &lt;manifest&gt;
+                        &lt;mainClass&gt;com.mycompany.mypackage.MyMainClass&lt;/mainClass&gt;
+                    &lt;/manifest&gt;
+                &lt;/archive&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.dstovall&lt;/groupId&gt;
+                &lt;artifactId&gt;onejar-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;1.2.3-SNAPSHOT&lt;/version&gt;
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;configuration&gt;
+                            &lt;!-- Optional --&gt;
+                            &lt;onejarVersion&gt;0.96&lt;/onejarVersion&gt;
+                        &lt;/configuration&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;one-jar&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+
+&lt;/project&gt;</pre>
+</div>
+<div class="section"><h3>Caveat</h3>
+<p>I wanted to get the latest version of this plugin out, and as a result I haven't spend the time to remove the warning from OneJar about a missing main/main.jar when this technique is used. I will be fixing this in the future, just not right now.</p>
+<p>It (apparently) does not effect exectution and is just a warning.</p>
+<p>The full text of the error is:</p>
+<div class="source"><pre>Boot: Warning: Unable to locate main/main.jar in the JAR file target/myproject-1.0-SNAPSHOT.one-jar.jar</pre>
+</div>
+</div>
+</div>
+<div class="section"><h2>Technique B - Instead of a 'regular' executable jar file</h2>
+<p>Just drop the following code into your <b>pom.xml</b>
+ and run <b>mvn package</b>
+</p>
+<div class="source"><pre>&lt;project&gt;
+
+    &lt;pluginRepositories&gt;
+        &lt;pluginRepository&gt;
+            &lt;id&gt;onejar-maven-plugin.googlecode.com&lt;/id&gt;
+            &lt;url&gt;http://onejar-maven-plugin.googlecode.com/svn/mavenrepo&lt;/url&gt;
+            &lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;
+            &lt;snapshots&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/snapshots&gt;
+        &lt;/pluginRepository&gt;
+        
+        &lt;pluginRepository&gt;
+            &lt;id&gt;onejar-maven-plugin.googlecode.com-snapshot&lt;/id&gt;
+            &lt;url&gt;http://onejar-maven-plugin.googlecode.com/svn/mavenrepo-snapshot&lt;/url&gt;
+            &lt;releases&gt;&lt;enabled&gt;false&lt;/enabled&gt;&lt;/releases&gt;
+            &lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/snapshots&gt;
+        &lt;/pluginRepository&gt;
+    &lt;/pluginRepositories&gt;
+
+    &lt;build&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.dstovall&lt;/groupId&gt;
+                &lt;artifactId&gt;onejar-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;1.2.3-SNAPSHOT&lt;/version&gt;
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;configuration&gt;
+                            &lt;mainClass&gt;com.mycompany.mypackage.MyMainClass&lt;/mainClass&gt;
+                            &lt;!-- Optional --&gt;
+                            &lt;onejarVersion&gt;0.96&lt;/onejarVersion&gt;
+                        &lt;/configuration&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;one-jar&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+
+&lt;/project&gt;</pre>
+</div>
+</div>
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2007-2009
+    
+          
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>

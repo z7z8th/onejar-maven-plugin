@@ -1,2 +1,1 @@
-
-For instructions, please see http://onejar-maven-plugin.googlecode.com/mavensite/
+For instructions, please see http://onejar-maven-plugin.googlecode.com/svn/mavensite/

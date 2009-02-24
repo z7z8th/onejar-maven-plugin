@@ -1,0 +1,20 @@
+<project name="onejar-maven-plugin">
+    <bannerLeft>
+        <name>onejar-maven-plugin</name>
+        <src>http://www.dstovall.org/onejar-maven-plugin/images/logo.png</src>
+        <href>http://www.dstovall.org/onejar-maven-pluginr</href>
+    </bannerLeft>
+    <bannerRight>
+        <name>onejar-maven-plugin</name>
+        <src>http://www.dstovall.org/onejar-maven-plugin/images/logo-small.png</src>
+        <href>http://www.dstovall.org/onejar-maven-plugin</href>
+    </bannerRight>
+    <body>
+        <menu name="Project">
+            <item name="home" href="http://www.dstovall.org/onejar-maven-plugin/index.html"/>
+            <item name="usage" href="http://www.dstovall.org/onejar-maven-plugin/usage.html"/>
+            <item name="history" href="http://www.dstovall.org/onejar-maven-plugin/history.html"/>
+        </menu>
+        ${reports}
+    </body>
+</project>

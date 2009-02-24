@@ -26,7 +26,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  * @goal one-jar
  * @phase package
  * @requiresProject
- * @requiresDependencyResolution compile
+ * @requiresDependencyResolution runtime
  */
 public class OneJarMojo extends AbstractMojo {
 

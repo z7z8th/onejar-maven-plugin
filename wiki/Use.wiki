@@ -1,5 +1,2 @@
-#summary How to use onejar-maven-plugin.
-
-= Use =
 
 For instructions, please see http://onejar-maven-plugin.googlecode.com/mavensite/

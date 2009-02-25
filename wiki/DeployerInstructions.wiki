@@ -68,7 +68,7 @@ Build a snapshot from the trunk:
 
 {{{
 cd trunk
-mvn clean && mvn install deploy
+mvn clean && mvn install source:jar javadoc:jar deploy
 }}}
 
 That should deploy the artifacts into `../mavenrepo-snapshot/`. Check if there is anything you need to `svn add`:
@@ -89,4 +89,3 @@ Go ahead and commit.
 {{{
 svn ci -m 'Deployed 1.2.3-SNAPSHOT.'
 }}}
-

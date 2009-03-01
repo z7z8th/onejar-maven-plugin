@@ -60,7 +60,7 @@ Mime-types should hopefully be correct. Check at http://onejar-maven-plugin.goog
 
 
 
-= mvn deploy =
+== mvn deploy ==
 
 As above, make sure you have the entire svn repo checked out, and not just the trunk.
 
@@ -89,3 +89,10 @@ Go ahead and commit.
 {{{
 svn ci -m 'Deployed 1.2.3-SNAPSHOT.'
 }}}
+
+
+== mvn release ==
+
+If you have set up your working directory like above, `mvn release:prepare` and `mvn release:perform` should work too.
+
+(TODO: we'll see how well it works when we release version 1.2.3!)

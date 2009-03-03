@@ -1,4 +1,5 @@
 #summary Instructions for deployment.
+#labels Phase-Deploy
 
 = Introduction =
 

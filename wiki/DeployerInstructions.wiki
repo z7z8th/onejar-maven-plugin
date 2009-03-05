@@ -51,6 +51,12 @@ svn st
 svn add mavensite/*
 }}}
 
+...or to automatically add all non-added files:
+
+{{{
+svn st | grep '^\?' | sed -r 's/^\? +//' | xargs svn add
+}}}
+
 Go ahead and commit.
 
 {{{

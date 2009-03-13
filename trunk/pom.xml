@@ -7,7 +7,7 @@
     <name>One-Jar Maven Plugin</name>
     <url>http://onejar-maven-plugin.googlecode.com/</url>
     <inceptionYear>2007</inceptionYear>
-
+    
     <developers>
         <developer>
             <id>dstovall</id>
@@ -42,9 +42,15 @@
         </license>
     </licenses>
 
+    <issueManagement>
+        <system>Google Code</system>
+        <url>http://code.google.com/p/onejar-maven-plugin/issues/list</url>
+    </issueManagement>
+  
     <scm>
         <connection>scm:svn:http://onejar-maven-plugin.googlecode.com/svn/trunk</connection>
         <developerConnection>scm:svn:https://onejar-maven-plugin.googlecode.com/svn/trunk</developerConnection>
+        <url>http://code.google.com/p/onejar-maven-plugin/source/browse/</url>
     </scm>
 
     <build>

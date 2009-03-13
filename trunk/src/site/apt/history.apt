@@ -1,8 +1,9 @@
 Updates (version 1.2.3)
 
     Updated by {{{http://blog.jayway.com/}Hugo Josefson}} to include runtime dependencies instead of compile time
-    dependencies. Also thank you to Hannu for submitting the same fix, which reminded us to actually release this
-    version!
+    dependencies.
+
+    Also thank you to Hannu for submitting the same fix, which reminded us to actually release this version!
 
     {{{http://onejar-maven-plugin.googlecode.com/svn/mavenrepo/org/dstovall/onejar-maven-plugin/1.2.3/onejar-maven-plugin-1.2.3-sources.jar}Source Code}}
 
@@ -45,3 +46,4 @@ Updates (version 1.2)
 Updates (version 1.1)
 
     This release got screwed up... I'm still learning the maven release process.
+

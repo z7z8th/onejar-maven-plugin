@@ -14,6 +14,15 @@ One-Jar Maven Plugin
     also learning a bit of maven, writing a plugin to automatically build a
     one-jar jar seemed like a good idea.
 
+Updates (version 1.2.3)
+
+    Updated by {{{http://blog.jayway.com/}Hugo Josefson}} to include runtime dependencies instead of compile time
+    dependencies. Also thank you to Hannu for submitting the same fix, which reminded us to actually release this
+    version!
+
+    {{{http://onejar-maven-plugin.googlecode.com/svn/mavenrepo/org/dstovall/onejar-maven-plugin/1.2.3/onejar-maven-plugin-1.2.3-sources.jar}Source Code}}
+
+
 Updates (version 1.2.2)
 
     Thank you to {{{http://www.ferociousflirting.com}Matthew O. Smith}}

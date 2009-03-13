@@ -21,6 +21,18 @@
             </roles>
             <timezone>-6</timezone>
         </developer>
+        <developer>
+            <id>hugojosefson</id>
+            <name>Hugo Josefson</name>
+            <email>hugo@josefson.org</email>
+            <url>http://blog.jayway.com/</url>
+            <organization>Jayway</organization>
+            <organizationUrl>http://www.jayway.com/</organizationUrl>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>GMT+1</timezone>
+        </developer>
     </developers>
 
     <licenses>

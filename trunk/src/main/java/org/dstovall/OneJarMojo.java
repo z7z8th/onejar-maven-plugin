@@ -17,8 +17,10 @@ import java.util.zip.ZipInputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.model.FileSet;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.codehaus.plexus.util.FileUtils;
 
 /**
  * Goal which touches a timestamp file.
@@ -38,6 +40,13 @@ public class OneJarMojo extends AbstractMojo {
      * @readonly
      */
     private Collection<Artifact> artifacts;
+    
+    /**
+     * FileSet to be included in the "binlib" directory inside the one-jar. This is the place to include native
+     * libraries such as .dll files and .so files. They will automatically be loaded by the one-jar.
+     * @parameter
+     */
+    private FileSet[] binlibs;
 
     /**
      * The directory for the resulting file.
@@ -115,6 +124,19 @@ public class OneJarMojo extends AbstractMojo {
             }
             for (File jar : jars) {
                 addToZip(jar, "lib/", out);
+            }
+
+            // Native libraries
+            if (binlibs != null) {
+                for (FileSet eachFileSet : binlibs) {
+                    List<File> includedFiles = toFileList(eachFileSet);
+                    if (getLog().isDebugEnabled()) {
+                        getLog().debug("Adding [" + includedFiles.size() + "] native libaries...");
+                    }
+                    for (File eachIncludedFile : includedFiles) {
+                        addToZip(eachIncludedFile, "binlib/", out);
+                    }
+                }
             }
 
             // One-jar stuff
@@ -227,4 +249,24 @@ public class OneJarMojo extends AbstractMojo {
         }
         return files;
     }
+
+    private static List<File> toFileList(FileSet fileSet)
+            throws IOException {
+        File directory = new File(fileSet.getDirectory());
+        String includes = toString(fileSet.getIncludes());
+        String excludes = toString(fileSet.getExcludes());
+        return FileUtils.getFiles(directory, includes, excludes);
+    }
+
+    private static String toString(List<String> strings) {
+        StringBuilder sb = new StringBuilder();
+        for (String string : strings) {
+            if (sb.length() > 0) {
+                sb.append(", ");
+            }
+            sb.append(string);
+        }
+        return sb.toString();
+    }
+
 }

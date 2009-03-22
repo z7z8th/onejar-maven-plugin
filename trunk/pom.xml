@@ -139,7 +139,7 @@
         <repository>
             <id>onejar-maven-plugin.googlecode.com</id>
             <name>onejar-maven-plugin Google Code Repository</name>
-            <url>file://${basedir}/../../../mavenrepo</url>
+            <url>file://${basedir}/../../mavenrepo</url>
         </repository>
         <snapshotRepository>
             <id>onejar-maven-plugin.googlecode.com</id>
@@ -148,7 +148,7 @@
         </snapshotRepository>
         <site>
             <id>onejar-maven-plugin.googlecode.com</id>
-            <url>file://${basedir}/../mavensite/</url>
+            <url>file://${basedir}/../../mavensite/</url>
         </site>
     </distributionManagement>
 </project>

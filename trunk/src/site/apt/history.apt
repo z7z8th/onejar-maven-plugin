@@ -1,3 +1,10 @@
+Updates (version 1.3.0)
+
+    Thank you to {{{http://code.google.com/u/eskatos.0}Paul}}
+    for contributing code for supporting the {{{http://one-jar.sourceforge.net/index.php?page=introduction&file=native}binlib feature of One-Jar}}.
+
+    {{{http://onejar-maven-plugin.googlecode.com/svn/mavenrepo/org/dstovall/onejar-maven-plugin/1.3.0/onejar-maven-plugin-1.3.0-sources.jar}Source Code}}
+
 Updates (version 1.2.3)
 
     Updated by {{{http://blog.jayway.com/}Hugo Josefson}} to include runtime dependencies instead of compile time

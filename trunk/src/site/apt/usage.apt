@@ -27,6 +27,15 @@ Technique A - In addition to a 'regular' executable jar file
                         <configuration>
                             <!-- Optional -->
                             <onejarVersion>0.96</onejarVersion>
+                            <!-- Optional -->
+                            <binlibs>
+                                <fileSet>
+                                    <directory>${project.build.directory}/dllextract</directory>
+                                    <includes>
+                                        <include>test.dll</include>
+                                    </includes>
+                                </fileSet>
+                            </binlibs>
                         </configuration>
                         <goals>
                             <goal>one-jar</goal>
@@ -82,6 +91,15 @@ Technique B - Instead of a 'regular' executable jar file
                             <mainClass>com.mycompany.mypackage.MyMainClass</mainClass>
                             <!-- Optional -->
                             <onejarVersion>0.96</onejarVersion>
+                            <!-- Optional -->
+                            <binlibs>
+                                <fileSet>
+                                    <directory>${project.build.directory}/dllextract</directory>
+                                    <includes>
+                                        <include>test.dll</include>
+                                    </includes>
+                                </fileSet>
+                            </binlibs>
                         </configuration>
                         <goals>
                             <goal>one-jar</goal>

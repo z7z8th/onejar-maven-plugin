@@ -47,7 +47,7 @@
   
     
             <div class="xleft">
-        Last Published: 2009-03-13
+        Last Published: 2009-03-22
                       </div>
             <div class="xright">      
   
@@ -152,6 +152,15 @@
                         &lt;configuration&gt;
                             &lt;!-- Optional --&gt;
                             &lt;onejarVersion&gt;0.96&lt;/onejarVersion&gt;
+                            &lt;!-- Optional --&gt;
+                            &lt;binlibs&gt;
+                                &lt;fileSet&gt;
+                                    &lt;directory&gt;${project.build.directory}/dllextract&lt;/directory&gt;
+                                    &lt;includes&gt;
+                                        &lt;include&gt;test.dll&lt;/include&gt;
+                                    &lt;/includes&gt;
+                                &lt;/fileSet&gt;
+                            &lt;/binlibs&gt;
                         &lt;/configuration&gt;
                         &lt;goals&gt;
                             &lt;goal&gt;one-jar&lt;/goal&gt;
@@ -194,6 +203,15 @@
                             &lt;mainClass&gt;com.mycompany.mypackage.MyMainClass&lt;/mainClass&gt;
                             &lt;!-- Optional --&gt;
                             &lt;onejarVersion&gt;0.96&lt;/onejarVersion&gt;
+                            &lt;!-- Optional --&gt;
+                            &lt;binlibs&gt;
+                                &lt;fileSet&gt;
+                                    &lt;directory&gt;${project.build.directory}/dllextract&lt;/directory&gt;
+                                    &lt;includes&gt;
+                                        &lt;include&gt;test.dll&lt;/include&gt;
+                                    &lt;/includes&gt;
+                                &lt;/fileSet&gt;
+                            &lt;/binlibs&gt;
                         &lt;/configuration&gt;
                         &lt;goals&gt;
                             &lt;goal&gt;one-jar&lt;/goal&gt;

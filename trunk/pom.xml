@@ -139,16 +139,19 @@
         <repository>
             <id>onejar-maven-plugin.googlecode.com</id>
             <name>onejar-maven-plugin Google Code Repository</name>
+            <!-- deploy from a release tag directory -->
             <url>file://${basedir}/../../mavenrepo</url>
         </repository>
         <snapshotRepository>
             <id>onejar-maven-plugin.googlecode.com</id>
             <name>onejar-maven-plugin Google Code SNAPSHOT Repository</name>
+            <!-- deploy from trunk -->
             <url>file://${basedir}/../mavenrepo-snapshot</url>
         </snapshotRepository>
         <site>
             <id>onejar-maven-plugin.googlecode.com</id>
-            <url>file://${basedir}/../../mavensite/</url>
+            <!-- deploy from trunk -->
+            <url>file://${basedir}/../mavensite/</url>
         </site>
     </distributionManagement>
 </project>

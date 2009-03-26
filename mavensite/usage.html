@@ -47,7 +47,7 @@
   
     
             <div class="xleft">
-        Last Published: 2009-03-22
+        Last Published: 2009-03-26
                       </div>
             <div class="xright">      
   
@@ -152,7 +152,7 @@
                         &lt;configuration&gt;
                             &lt;!-- Optional --&gt;
                             &lt;onejarVersion&gt;0.96&lt;/onejarVersion&gt;
-                            &lt;!-- Optional --&gt;
+                            &lt;!-- Optional, use only if you need to include native libraries (dll's) --&gt;
                             &lt;binlibs&gt;
                                 &lt;fileSet&gt;
                                     &lt;directory&gt;${project.build.directory}/dllextract&lt;/directory&gt;
@@ -161,6 +161,10 @@
                                     &lt;/includes&gt;
                                 &lt;/fileSet&gt;
                             &lt;/binlibs&gt;
+                            &lt;!-- Optional, default is false --&gt;
+                            &lt;attachToBuild&gt;true&lt;/attachToBuild&gt;
+                            &lt;!-- Optional, default is &quot;onejar&quot; --&gt;
+                            &lt;classifier&gt;onejar&lt;/classifier&gt;
                         &lt;/configuration&gt;
                         &lt;goals&gt;
                             &lt;goal&gt;one-jar&lt;/goal&gt;
@@ -203,7 +207,7 @@
                             &lt;mainClass&gt;com.mycompany.mypackage.MyMainClass&lt;/mainClass&gt;
                             &lt;!-- Optional --&gt;
                             &lt;onejarVersion&gt;0.96&lt;/onejarVersion&gt;
-                            &lt;!-- Optional --&gt;
+                            &lt;!-- Optional, use only if you need to include native libraries (dll's) --&gt;
                             &lt;binlibs&gt;
                                 &lt;fileSet&gt;
                                     &lt;directory&gt;${project.build.directory}/dllextract&lt;/directory&gt;
@@ -212,6 +216,10 @@
                                     &lt;/includes&gt;
                                 &lt;/fileSet&gt;
                             &lt;/binlibs&gt;
+                            &lt;!-- Optional, default is false --&gt;
+                            &lt;attachToBuild&gt;true&lt;/attachToBuild&gt;
+                            &lt;!-- Optional, default is &quot;onejar&quot; --&gt;
+                            &lt;classifier&gt;onejar&lt;/classifier&gt;
                         &lt;/configuration&gt;
                         &lt;goals&gt;
                             &lt;goal&gt;one-jar&lt;/goal&gt;

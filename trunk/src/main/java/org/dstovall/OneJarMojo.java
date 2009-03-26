@@ -20,10 +20,12 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.FileSet;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProjectHelper;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
 
 /**
- * Goal which touches a timestamp file.
+ * Creates an executable one-jar version of the project's normal jar, including all dependencies.
  *
  * @goal one-jar
  * @phase package
@@ -90,6 +92,38 @@ public class OneJarMojo extends AbstractMojo {
     private String onejarVersion;
 
     /**
+     * Whether to attach the generated one-jar to the build. You may also wish to set <code>classifier</code>.
+     *
+     * @parameter default-value=false
+     */
+    private boolean attachToBuild;
+
+    /**
+     * Classifier to use, if the one-jar is to be attached to the build.
+     * Set <code>&lt;attachToBuild&gt;true&lt;/attachToBuild&gt; if you want that.
+     *
+     * @parameter default-value="onejar" 
+     */
+    private String classifier;
+
+    /**
+     * This Maven project.
+     *
+     * @parameter expression="${project}"
+     * @required
+     * @readonly
+     */
+    private MavenProject project;
+    
+    /**
+     * For attaching artifacts etc.
+     *
+     * @component
+     * @readonly
+     */
+    private MavenProjectHelper projectHelper;
+
+    /**
      * The main class that one-jar should activate
      *
      * @parameter expression="${onejar-mainclass}"
@@ -104,9 +138,10 @@ public class OneJarMojo extends AbstractMojo {
         JarOutputStream out = null;
         JarInputStream template = null;
 
+        File onejarFile;
         try {
             // Create the target file
-            File onejarFile = new File(outputDirectory, filename);
+            onejarFile = new File(outputDirectory, filename);
 
             // Open a stream to write to the target file
             out = new JarOutputStream(new FileOutputStream(onejarFile, false), getManifest());
@@ -152,9 +187,15 @@ public class OneJarMojo extends AbstractMojo {
 
         } catch (IOException e) {
             getLog().error(e);
+            throw new MojoExecutionException("One-jar Mojo failed.", e);
         } finally {
             IOUtils.closeQuietly(out);
             IOUtils.closeQuietly(template);
+        }
+
+        // Attach the created one-jar to the build.
+        if (attachToBuild){
+            projectHelper.attachArtifact(project, "jar", classifier, onejarFile);
         }
     }
 

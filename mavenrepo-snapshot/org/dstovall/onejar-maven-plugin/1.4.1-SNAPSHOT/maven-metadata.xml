@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.dstovall</groupId>
+  <artifactId>onejar-maven-plugin</artifactId>
+  <version>1.4.1-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20090415.200412</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20090415200412</lastUpdated>
+  </versioning>
+</metadata>

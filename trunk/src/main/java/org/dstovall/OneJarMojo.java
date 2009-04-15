@@ -1,11 +1,16 @@
 package org.dstovall;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import org.apache.commons.io.IOUtils;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.model.Dependency;
+import org.apache.maven.model.FileSet;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectHelper;
+import org.codehaus.plexus.util.FileUtils;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -14,15 +19,6 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.model.FileSet;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.project.MavenProjectHelper;
-import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.util.FileUtils;
 
 /**
  * Creates an executable one-jar version of the project's normal jar, including all dependencies.
@@ -42,7 +38,16 @@ public class OneJarMojo extends AbstractMojo {
      * @readonly
      */
     private Collection<Artifact> artifacts;
-    
+
+    /**
+     * All declared dependencies in this project, including system scoped dependencies.
+     *
+     * @parameter default-value="${project.dependencies}"
+     * @required
+     * @readonly
+     */
+    private Collection<Dependency> dependencies;
+
     /**
      * FileSet to be included in the "binlib" directory inside the one-jar. This is the place to include native
      * libraries such as .dll files and .so files. They will automatically be loaded by the one-jar.
@@ -152,21 +157,31 @@ public class OneJarMojo extends AbstractMojo {
             }
             addToZip(new File(outputDirectory, mainJarFilename), "main/", out);
 
-            // Libraries
-            List<File> jars = getFilesForStrings(artifacts, false, true);
+            // All dependencies, including transient dependencies, but excluding system scope dependencies
+            List<File> dependencyJars = extractDependencyFiles(artifacts);
             if (getLog().isDebugEnabled()) {
-                getLog().debug("Adding [" + jars.size() + "] libaries...");
+                getLog().debug("Adding [" + dependencyJars.size() + "] dependency libraries...");
             }
-            for (File jar : jars) {
+            for (File jar : dependencyJars) {
                 addToZip(jar, "lib/", out);
             }
+
+            // System scope dependencies
+            List<File> systemDependencyJars = extractSystemDependencyFiles(dependencies);
+            if (getLog().isDebugEnabled()) {
+                getLog().debug("Adding [" + systemDependencyJars.size() + "] system dependency libraries...");
+            }
+            for (File jar : systemDependencyJars) {
+                addToZip(jar, "lib/", out);
+            }
+
 
             // Native libraries
             if (binlibs != null) {
                 for (FileSet eachFileSet : binlibs) {
                     List<File> includedFiles = toFileList(eachFileSet);
                     if (getLog().isDebugEnabled()) {
-                        getLog().debug("Adding [" + includedFiles.size() + "] native libaries...");
+                        getLog().debug("Adding [" + includedFiles.size() + "] native libraries...");
                     }
                     for (File eachIncludedFile : includedFiles) {
                         addToZip(eachIncludedFile, "binlib/", out);
@@ -267,25 +282,44 @@ public class OneJarMojo extends AbstractMojo {
     }
 
     /**
-     * Returns File objects for each parameter string. TODO: Replace with Transformer
+     * Returns a {@link File} object for each artifact.
      *
-     * @param artifacts          <em>(Must be non-<code>null</code>)</em>
-     * @param includeDirectories
-     * @param includeFiles
-     * @return <em>(Must be non-<code>null</code>)</em>
+     * @param artifacts Pre-resolved artifacts
+     * @return <code>File</code> objects for each artifact.
      */
-    private List<File> getFilesForStrings(Collection<Artifact> artifacts, boolean includeDirectories, boolean includeFiles) {
-        List<File> files = new ArrayList<File>(artifacts.size());
+    private List<File> extractDependencyFiles(Collection<Artifact> artifacts) {
+        List<File> files = new ArrayList<File>();
+
+        if (artifacts == null){
+            return files;
+        }
 
         for (Artifact artifact : artifacts) {
             File file = artifact.getFile();
 
-            if (file.isFile() && includeFiles) {
+            if (file.isFile()) {
                 files.add(file);
             }
 
-            if (file.isDirectory() && includeDirectories) {
-                files.add(file);
+        }
+        return files;
+    }
+
+    /**
+     * Returns a {@link File} object for each system dependency.
+     * @param systemDependencies a collection of dependencies
+     * @return <code>File</code> objects for each system dependency in the supplied dependencies.
+     */
+    private List<File> extractSystemDependencyFiles(Collection<Dependency> systemDependencies) {
+        final ArrayList<File> files = new ArrayList<File>();
+
+        if (systemDependencies == null){
+            return files;
+        }
+
+        for (Dependency systemDependency : systemDependencies) {
+            if (systemDependency != null && "system".equals(systemDependency.getScope())){
+                files.add(new File(systemDependency.getSystemPath()));
             }
         }
         return files;

@@ -156,8 +156,12 @@
         </snapshotRepository>
         <site>
             <id>onejar-maven-plugin.googlecode.com</id>
-            <!-- deploy from trunk -->
+
+			<!-- deploy from trunk -->
             <url>file://${basedir}/../mavensite/</url>
+
+			<!-- deploy from a release tag directory -->
+            <!-- <url>file://${basedir}/../../mavensite/</url> -->
         </site>
     </distributionManagement>
 </project>

@@ -1,3 +1,10 @@
+Updates (version 1.4.1)
+
+    Updated by {{{http://blog.jayway.com/}Hugo Josefson}} to include system scope dependencies in the built jar.
+
+    {{{http://onejar-maven-plugin.googlecode.com/svn/mavenrepo/org/dstovall/onejar-maven-plugin/1.4.1/onejar-maven-plugin-1.4.1-sources.jar}Source Code}}
+
+
 Updates (version 1.4.0)
 
     Updated by {{{http://blog.jayway.com/}Hugo Josefson}} to allow the generated one-jar to be attached to the build.

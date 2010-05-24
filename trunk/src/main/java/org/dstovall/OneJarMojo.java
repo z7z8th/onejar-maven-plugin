@@ -14,10 +14,12 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
 import java.util.zip.ZipInputStream;
 
 /**
@@ -264,10 +266,21 @@ public class OneJarMojo extends AbstractMojo {
         addToZip(out, new ZipEntry(zipfilePath + sourceFile.getName()), new FileInputStream(sourceFile));
     }
 
+    private final AtomicInteger alternativeEntryCounter = new AtomicInteger(0);
     private void addToZip(JarOutputStream out, ZipEntry entry, InputStream in) throws IOException {
-        out.putNextEntry(entry);
-        IOUtils.copy(in, out);
-        out.closeEntry();
+        try{
+            out.putNextEntry(entry);
+            IOUtils.copy(in, out);
+            out.closeEntry();
+        }catch(ZipException e){
+            if (e.getMessage().startsWith("duplicate entry")){
+                // A Jar with the same name was already added. Let's add this one using a modified name:
+                final ZipEntry alternativeEntry = new ZipEntry(entry.getName() + "-DUPLICATE-FILENAME-" + alternativeEntryCounter.incrementAndGet() + ".jar");
+                addToZip(out, alternativeEntry, in);
+            }else{
+                throw e;
+            }
+        }
     }
 
     private InputStream getFileBytes(ZipInputStream is, String name) throws IOException {

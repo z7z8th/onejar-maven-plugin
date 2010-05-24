@@ -1,3 +1,10 @@
+Updates (version 1.4.2)
+
+    Updated by {{{http://blog.jayway.com/}Hugo Josefson}} to fix Issue 21, renaming identically named jars to avoid ZipException.
+
+    {{{http://onejar-maven-plugin.googlecode.com/svn/mavenrepo/org/dstovall/onejar-maven-plugin/1.4.2/onejar-maven-plugin-1.4.2-sources.jar}Source Code}}
+
+
 Updates (version 1.4.1)
 
     Updated by {{{http://blog.jayway.com/}Hugo Josefson}} to include system scope dependencies in the built jar.

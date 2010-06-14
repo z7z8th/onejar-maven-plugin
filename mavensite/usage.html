@@ -47,7 +47,7 @@
   
     
             <div class="xleft">
-        Last Published: 2010-05-30
+        Last Published: 2010-06-14
                       </div>
             <div class="xright">      
   
@@ -107,19 +107,20 @@
 <div class="source"><pre>&lt;project&gt;
 
     &lt;build&gt;
-        &lt;plugin&gt;
-            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-            &lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt;
-            &lt;configuration&gt;
-                &lt;archive&gt;
-                    &lt;manifest&gt;
-                        &lt;mainClass&gt;com.mycompany.mypackage.MyMainClass&lt;/mainClass&gt;
-                    &lt;/manifest&gt;
-                &lt;/archive&gt;
-            &lt;/configuration&gt;
-        &lt;/plugin&gt;
-        &lt;plugin&gt;
-            &lt;groupId&gt;org.dstovall&lt;/groupId&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt;
+                &lt;configuration&gt;
+                    &lt;archive&gt;
+                        &lt;manifest&gt;
+                            &lt;mainClass&gt;com.mycompany.mypackage.MyMainClass&lt;/mainClass&gt;
+                        &lt;/manifest&gt;
+                    &lt;/archive&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.dstovall&lt;/groupId&gt;
                 &lt;artifactId&gt;onejar-maven-plugin&lt;/artifactId&gt;
                 &lt;version&gt;1.4.3&lt;/version&gt;
                 &lt;executions&gt;
@@ -172,8 +173,9 @@
 <div class="source"><pre>&lt;project&gt;
 
     &lt;build&gt;
-        &lt;plugin&gt;
-            &lt;groupId&gt;org.dstovall&lt;/groupId&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.dstovall&lt;/groupId&gt;
                 &lt;artifactId&gt;onejar-maven-plugin&lt;/artifactId&gt;
                 &lt;version&gt;1.4.3&lt;/version&gt;
                 &lt;executions&gt;

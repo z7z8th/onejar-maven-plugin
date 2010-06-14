@@ -7,19 +7,20 @@ Technique A - In addition to a 'regular' executable jar file
 <project>
 
     <build>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <configuration>
-                <archive>
-                    <manifest>
-                        <mainClass>com.mycompany.mypackage.MyMainClass</mainClass>
-                    </manifest>
-                </archive>
-            </configuration>
-        </plugin>
-        <plugin>
-            <groupId>org.dstovall</groupId>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.mycompany.mypackage.MyMainClass</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.dstovall</groupId>
                 <artifactId>onejar-maven-plugin</artifactId>
                 <version>1.4.3</version>
                 <executions>
@@ -85,8 +86,9 @@ Technique B - Instead of a 'regular' executable jar file
 <project>
 
     <build>
-        <plugin>
-            <groupId>org.dstovall</groupId>
+        <plugins>
+            <plugin>
+                <groupId>org.dstovall</groupId>
                 <artifactId>onejar-maven-plugin</artifactId>
                 <version>1.4.3</version>
                 <executions>

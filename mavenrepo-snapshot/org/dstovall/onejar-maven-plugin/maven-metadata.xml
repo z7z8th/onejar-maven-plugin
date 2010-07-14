@@ -4,14 +4,15 @@
   <artifactId>onejar-maven-plugin</artifactId>
   <version>1.2.3-SNAPSHOT</version>
   <versioning>
-    <latest>1.4.1-SNAPSHOT</latest>
+    <latest>1.4.4-SNAPSHOT</latest>
     <versions>
       <version>1.2.3-SNAPSHOT</version>
       <version>1.2.4-SNAPSHOT</version>
       <version>1.3.0-SNAPSHOT</version>
       <version>1.4.0-SNAPSHOT</version>
       <version>1.4.1-SNAPSHOT</version>
+      <version>1.4.4-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20090415200412</lastUpdated>
+    <lastUpdated>20100714185758</lastUpdated>
   </versioning>
 </metadata>

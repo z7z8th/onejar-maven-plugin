@@ -22,7 +22,7 @@ Technique A - In addition to a 'regular' executable jar file
             <plugin>
                 <groupId>org.dstovall</groupId>
                 <artifactId>onejar-maven-plugin</artifactId>
-                <version>1.4.3</version>
+                <version>1.4.4</version>
                 <executions>
                     <execution>
                         <configuration>
@@ -90,7 +90,7 @@ Technique B - Instead of a 'regular' executable jar file
             <plugin>
                 <groupId>org.dstovall</groupId>
                 <artifactId>onejar-maven-plugin</artifactId>
-                <version>1.4.3</version>
+                <version>1.4.4</version>
                 <executions>
                     <execution>
                         <configuration>

@@ -17,6 +17,13 @@ One-Jar Maven Plugin
     The project has moved to Google Code, which means the main front page is now at
     {{http://onejar-maven-plugin.googlecode.com/}}. You will also find Issue tracking there.
 
+Updates (version 1.4.4)
+
+    Updated by {{{http://www.simontuffs.com/}Simon Tuffs}} to use the actual 0.97 release version of one-jar.
+
+    {{{http://onejar-maven-plugin.googlecode.com/svn/mavenrepo/org/dstovall/onejar-maven-plugin/1.4.4/onejar-maven-plugin-1.4.4-sources.jar}Source Code}}
+
+
 Updates (version 1.4.3)
 
     Updated by {{{http://blog.jayway.com/}Hugo Josefson}} to use the latest version of one-jar (0.97).

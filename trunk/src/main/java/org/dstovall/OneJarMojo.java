@@ -14,7 +14,10 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.jar.Attributes;
 import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
@@ -76,14 +79,6 @@ public class OneJarMojo extends AbstractMojo {
     private String mainJarFilename;
 
     /**
-     * Implementation Version of the jar.  Defaults to the build's version.
-     *
-     * @parameter expression="${project.version}"
-     * @required
-     */
-    private String implementationVersion;
-
-    /**
      * Name of the generated JAR.
      *
      * @parameter expression="${project.build.finalName}.one-jar.jar"
@@ -137,6 +132,22 @@ public class OneJarMojo extends AbstractMojo {
      */
     private String mainClass;
 
+    /**
+     * Implementation Version of the jar.  Defaults to the build's version.
+     *
+     * @parameter expression="${project.version}"
+     * @required
+     */
+    private String implementationVersion;
+    
+	/**
+	 * The entries to include as-is in the one-jar manifest
+	 * 
+	 * @see <a href="http://one-jar.sourceforge.net/index.php?page=details&file=manifest">Documentation one the one-jar manifest options</a>.
+	 * @parameter
+	 */
+	private Map<String,String> manifestEntries;
+    
     public void execute() throws MojoExecutionException {
 
         // Show some info about the plugin.
@@ -234,6 +245,9 @@ public class OneJarMojo extends AbstractMojo {
     private JarInputStream openOnejarTemplateArchive() throws IOException {
         return new JarInputStream(getClass().getClassLoader().getResourceAsStream(getOnejarArchiveName()));
     }
+    
+    private final String requiredManifestVersionKey = "ImplementationVersion";
+    private final String oldOptionMainClassKey = "One-Jar-Main-Class";
 
     private Manifest getManifest() throws IOException {
         // Copy the template's boot-manifest.mf file
@@ -241,9 +255,12 @@ public class OneJarMojo extends AbstractMojo {
         Manifest manifest = new Manifest(getFileBytes(zipIS, "boot-manifest.mf"));
         IOUtils.closeQuietly(zipIS);
 
-        // If the client has specified a mainClass argument, add the proper entry to the manifest
-        if (mainClass != null) {
-            manifest.getMainAttributes().putValue("One-Jar-Main-Class", mainClass);
+        Attributes mainAttributes = manifest.getMainAttributes();
+        for (Entry<String, String> entry : manifestEntries.entrySet()) {
+        	if (getLog().isDebugEnabled()) {
+                getLog().debug("adding entry ["+entry.getKey()+":"+entry.getValue()+"] to the one-jar manifest");
+        	}
+        	mainAttributes.putValue(entry.getKey(), entry.getValue());
         }
 
         // If the client has specified an implementationVersion argument, add it also
@@ -253,8 +270,13 @@ public class OneJarMojo extends AbstractMojo {
         // some for "implemenation-version", and others use various capitalizations of these two.  It's likely that a
         // better solution then this "brute-force" bit here is to allow clients to configure these entries from the
         // Maven POM.
-        if (implementationVersion != null) {
-            manifest.getMainAttributes().putValue("ImplementationVersion", implementationVersion);
+        if (mainAttributes.getValue(requiredManifestVersionKey) == null) {
+			manifest.getMainAttributes().putValue(requiredManifestVersionKey, implementationVersion);
+        }
+        // If the client has specified a mainClass argument, add the proper entry to the manifest
+        // to be backwards compatible, add mainclass as simple option when not already set in manifestEntries
+        if (mainAttributes.getValue(oldOptionMainClassKey) == null && mainClass != null) {
+			manifest.getMainAttributes().putValue(oldOptionMainClassKey, mainClass);
         }
 
         return manifest;

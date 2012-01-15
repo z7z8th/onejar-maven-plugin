@@ -141,7 +141,8 @@ public class OneJarMojo extends AbstractMojo {
     private String implementationVersion;
     
 	/**
-	 * The entries to include as-is in the one-jar manifest
+	 * The entries to include as-is in the one-jar manifest.
+	 * This is optional.
 	 * 
 	 * @see <a href="http://one-jar.sourceforge.net/index.php?page=details&file=manifest">Documentation one the one-jar manifest options</a>.
 	 * @parameter
@@ -256,11 +257,14 @@ public class OneJarMojo extends AbstractMojo {
         IOUtils.closeQuietly(zipIS);
 
         Attributes mainAttributes = manifest.getMainAttributes();
-        for (Entry<String, String> entry : manifestEntries.entrySet()) {
-        	if (getLog().isDebugEnabled()) {
-                getLog().debug("adding entry ["+entry.getKey()+":"+entry.getValue()+"] to the one-jar manifest");
-        	}
-        	mainAttributes.putValue(entry.getKey(), entry.getValue());
+        // add explicitly specified manifest entries
+        if (manifestEntries != null) {
+	        for (Entry<String, String> entry : manifestEntries.entrySet()) {
+	        	if (getLog().isDebugEnabled()) {
+	                getLog().debug("adding entry ["+entry.getKey()+":"+entry.getValue()+"] to the one-jar manifest");
+	        	}
+	        	mainAttributes.putValue(entry.getKey(), entry.getValue());
+	        }
         }
 
         // If the client has specified an implementationVersion argument, add it also

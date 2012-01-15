@@ -88,6 +88,7 @@ public class OneJarMojo extends AbstractMojo {
      */
     private String filename;
 
+    // TODO: do we want to be strict and do a mutual exclusive check for version and local template?
     /**
      * The version of one-jar to use.  Has a default, so typically no need to specify this.
      *
@@ -95,6 +96,15 @@ public class OneJarMojo extends AbstractMojo {
      */
     private String onejarVersion;
 
+    /**
+     * A custom one-jar artifact to start from (RC build for example).
+     * This must be a "one-jar-boot.jar" style artifact. 
+     * If you specify this option, the onejarVersion will have no effect anymore.
+     * 
+     * @parameter 
+     */
+    private String localOneJarTemplate;
+    
     /**
      * Whether to attach the generated one-jar to the build. You may also wish to set <code>classifier</code>.
      *
@@ -233,7 +243,11 @@ public class OneJarMojo extends AbstractMojo {
     private void displayPluginInfo() {
         getLog().info("Using One-Jar to create a single-file distribution");
         getLog().info("Implementation Version: " + implementationVersion);
-        getLog().info("Using One-Jar version: " + onejarVersion);
+        if (localOneJarTemplate != null) {
+        	getLog().info("Using local One-Jar template: " + localOneJarTemplate);
+        } else {
+        	getLog().info("Using One-Jar version: " + onejarVersion);
+        }
         getLog().info("More info on One-Jar: http://one-jar.sourceforge.net/");
         getLog().info("License for One-Jar:  http://one-jar.sourceforge.net/one-jar-license.txt");
         getLog().info("One-Jar file: " + outputDirectory.getAbsolutePath() + File.separator + filename);
@@ -246,7 +260,11 @@ public class OneJarMojo extends AbstractMojo {
     }
 
     private JarInputStream openOnejarTemplateArchive() throws IOException {
-        return new JarInputStream(getClass().getClassLoader().getResourceAsStream(getOnejarArchiveName()));
+    	if (localOneJarTemplate != null) {
+    		return new JarInputStream(new FileInputStream(new File(project.getBasedir(), localOneJarTemplate)));
+    	} else {    	
+    		return new JarInputStream(getClass().getClassLoader().getResourceAsStream(getOnejarArchiveName()));
+    	}
     }
     
     private final String requiredManifestVersionKey = "ImplementationVersion";

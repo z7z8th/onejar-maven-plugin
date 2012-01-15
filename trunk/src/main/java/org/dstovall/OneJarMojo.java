@@ -80,6 +80,8 @@ public class OneJarMojo extends AbstractMojo {
 
     /**
      * Name of the generated JAR.
+     * Will default to the final name if left unspecified.
+     * Include the classifier if required, it will not be added automatically.
      *
      * @parameter expression="${project.build.finalName}.one-jar.jar"
      * @required

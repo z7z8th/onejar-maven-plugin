@@ -11,8 +11,10 @@ import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.plexus.util.FileUtils;
 
 import java.io.*;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -34,8 +36,12 @@ import java.util.zip.ZipInputStream;
  * @requiresDependencyResolution runtime
  */
 public class OneJarMojo extends AbstractMojo {
+	
+	private static final String MF_REQUIRED_IMPL_VERSION = "ImplementationVersion";
+    private static final String MF_OPTION_MAIN_CLASS = "One-Jar-Main-Class";
+    private static final String MF_OPTION_SPLASH_SCREEN_IMAGE = "SplashScreen-Image";
 
-    /**
+	/**
      * All the dependencies including trancient dependencies.
      *
      * @parameter default-value="${project.artifacts}"
@@ -56,6 +62,7 @@ public class OneJarMojo extends AbstractMojo {
     /**
      * FileSet to be included in the "binlib" directory inside the one-jar. This is the place to include native
      * libraries such as .dll files and .so files. They will automatically be loaded by the one-jar.
+     * 
      * @parameter
      */
     private FileSet[] binlibs;
@@ -100,6 +107,7 @@ public class OneJarMojo extends AbstractMojo {
      * A custom one-jar artifact to start from (RC build for example).
      * This must be a "one-jar-boot.jar" style artifact. 
      * If you specify this option, the onejarVersion will have no effect anymore.
+     * This should be a path relative to the project basedir.
      * 
      * @parameter 
      */
@@ -145,7 +153,16 @@ public class OneJarMojo extends AbstractMojo {
     private String mainClass;
 
     /**
-     * Implementation Version of the jar.  Defaults to the build's version.
+     * The splash screen image.
+     * This should be a path relative to the project basedir.
+     * Adds the option to the manifest and copies and checks the image.
+     * 
+     * @parameter expression="${onejar-splashScreen}"
+     */
+    private String splashScreen;
+    
+    /**
+     * Implementation Version of the jar. Defaults to the build's version.
      *
      * @parameter expression="${project.version}"
      * @required
@@ -155,6 +172,7 @@ public class OneJarMojo extends AbstractMojo {
 	/**
 	 * The entries to include as-is in the one-jar manifest.
 	 * This is optional.
+	 * Values used here will are leading and will not be overridden by other options.
 	 * 
 	 * @see <a href="http://one-jar.sourceforge.net/index.php?page=details&file=manifest">Documentation one the one-jar manifest options</a>.
 	 * @parameter
@@ -168,66 +186,26 @@ public class OneJarMojo extends AbstractMojo {
 
         JarOutputStream out = null;
         JarInputStream template = null;
-
-        File onejarFile;
+        File onejarFile = null;
         try {
-            // Create the target file
+        	// Create the target file
             onejarFile = new File(outputDirectory, filename);
 
+            // Prepare the onejar manifest file content
+            Manifest manifest = prepareManifest();
+            
             // Open a stream to write to the target file
-            out = new JarOutputStream(new FileOutputStream(onejarFile, false), getManifest());
-
-            // Main jar
-            if (getLog().isDebugEnabled()) {
-                getLog().debug("Adding main jar main/[" + mainJarFilename + "]");
-            }
-            addToZip(new File(outputDirectory, mainJarFilename), "main/", out);
-
-            // All dependencies, including transient dependencies, but excluding system scope dependencies
-            List<File> dependencyJars = extractDependencyFiles(artifacts);
-            if (getLog().isDebugEnabled()) {
-                getLog().debug("Adding [" + dependencyJars.size() + "] dependency libraries...");
-            }
-            for (File jar : dependencyJars) {
-                addToZip(jar, "lib/", out);
-            }
-
-            // System scope dependencies
-            List<File> systemDependencyJars = extractSystemDependencyFiles(dependencies);
-            if (getLog().isDebugEnabled()) {
-                getLog().debug("Adding [" + systemDependencyJars.size() + "] system dependency libraries...");
-            }
-            for (File jar : systemDependencyJars) {
-                addToZip(jar, "lib/", out);
-            }
-
-
-            // Native libraries
-            if (binlibs != null) {
-                for (FileSet eachFileSet : binlibs) {
-                    List<File> includedFiles = toFileList(eachFileSet);
-                    if (getLog().isDebugEnabled()) {
-                        getLog().debug("Adding [" + includedFiles.size() + "] native libraries...");
-                    }
-                    for (File eachIncludedFile : includedFiles) {
-                        addToZip(eachIncludedFile, "binlib/", out);
-                    }
-                }
-            }
-
-            // One-jar stuff
-            getLog().debug("Adding one-jar components...");
+			out = new JarOutputStream(new FileOutputStream(onejarFile, false), manifest);
+        	
+			// Add files (based on options)
+            addFilesToArchive(out);
+            
+            // Finalize the onejar archive
             template = openOnejarTemplateArchive();
-            ZipEntry entry;
-            while ((entry = template.getNextEntry()) != null) {
-                // Skip the manifest file, no need to clutter...
-                if (!"boot-manifest.mf".equals(entry.getName())) {
-                    addToZip(out, entry, template);
-                }
-            }
-
+            copyTemplateFilesToArchive(template, out);
+            
         } catch (IOException e) {
-            getLog().error(e);
+            error(e);
             throw new MojoExecutionException("One-jar Mojo failed.", e);
         } finally {
             IOUtils.closeQuietly(out);
@@ -235,22 +213,80 @@ public class OneJarMojo extends AbstractMojo {
         }
 
         // Attach the created one-jar to the build.
-        if (attachToBuild){
+        if (attachToBuild) {
             projectHelper.attachArtifact(project, "jar", classifier, onejarFile);
         }
     }
 
-    private void displayPluginInfo() {
-        getLog().info("Using One-Jar to create a single-file distribution");
-        getLog().info("Implementation Version: " + implementationVersion);
-        if (localOneJarTemplate != null) {
-        	getLog().info("Using local One-Jar template: " + localOneJarTemplate);
-        } else {
-        	getLog().info("Using One-Jar version: " + onejarVersion);
+	private void copyTemplateFilesToArchive(JarInputStream template,
+			JarOutputStream out) throws IOException {
+		// One-jar stuff
+        debug("Adding one-jar components...");
+		
+		ZipEntry entry = null;
+        while ((entry = template.getNextEntry()) != null) {
+            // Skip the manifest file, no need to clutter...
+            if (!"boot-manifest.mf".equals(entry.getName())) {
+                addToZip(out, entry, template);
+            }
         }
-        getLog().info("More info on One-Jar: http://one-jar.sourceforge.net/");
-        getLog().info("License for One-Jar:  http://one-jar.sourceforge.net/one-jar-license.txt");
-        getLog().info("One-Jar file: " + outputDirectory.getAbsolutePath() + File.separator + filename);
+	}
+
+	private void addFilesToArchive(JarOutputStream out) throws IOException, MojoExecutionException {
+		final List<File> dependencyJars = Collections.unmodifiableList(extractDependencyFiles(artifacts));
+        final List<File> systemDependencyJars = Collections.unmodifiableList(extractSystemDependencyFiles(dependencies));
+		
+        // Main jar
+        debug("Adding main jar main/[%s]", mainJarFilename);
+        addToZip(new File(outputDirectory, mainJarFilename), "main/", out);
+
+        // Add all dependencies, including transient dependencies, but excluding system scope dependencies
+        debug("Adding [%s] dependency libraries...", dependencyJars.size());
+        for (File jar : dependencyJars) {
+            addToZip(jar, "lib/", out);
+        }
+
+        // Add system scope dependencies
+        debug("Adding [%s] system dependency libraries...", systemDependencyJars.size());
+        for (File jar : systemDependencyJars) {
+            addToZip(jar, "lib/", out);
+        }
+
+        // Add native libraries
+        if (binlibs != null) {
+            for (FileSet eachFileSet : binlibs) {
+                List<File> includedFiles = toFileList(eachFileSet);
+                debug("Adding [%s] native libraries...", includedFiles.size());
+                for (File eachIncludedFile : includedFiles) {
+                    addToZip(eachIncludedFile, "binlib/", out);
+                }
+            }
+        }
+
+        // Add splash screen image
+        if (splashScreen != null) {
+        	File splashFile = new File(project.getBasedir(), splashScreen);
+        	if (splashFile.exists()) {
+        		debug("Adding splash screen image [%s]", splashScreen);
+        		addToZip(out, new ZipEntry(splashScreen), new FileInputStream(splashFile));
+        	} else {
+        		throw new MojoExecutionException("Could not find splash screen image defined in pom.");
+        	}
+        }
+
+	}
+
+	private void displayPluginInfo() {
+        info("Using One-Jar to create a single-file distribution");
+        info("Implementation Version: %s", implementationVersion);
+        if (localOneJarTemplate != null) {
+        	info("Using local One-Jar template: %s", localOneJarTemplate);
+        } else {
+        	info("Using One-Jar version: %s", onejarVersion);
+        }
+        info("More info on One-Jar: http://one-jar.sourceforge.net/");
+        info("License for One-Jar:  http://one-jar.sourceforge.net/one-jar-license.txt");
+        info("One-Jar file: %s", outputDirectory.getAbsolutePath() + File.separator + filename);
     }
 
     // ----- One-Jar Template ------------------------------------------------------------------------------------------
@@ -267,25 +303,22 @@ public class OneJarMojo extends AbstractMojo {
     	}
     }
     
-    private final String requiredManifestVersionKey = "ImplementationVersion";
-    private final String oldOptionMainClassKey = "One-Jar-Main-Class";
-
-    private Manifest getManifest() throws IOException {
+    private class AttributeEntry extends AbstractMap.SimpleEntry<String, String> {
+		private static final long serialVersionUID = 843323303047092453L;
+    	public AttributeEntry(String key, String value) {
+			super(key, value);
+		}
+	}
+    
+    private Manifest prepareManifest() throws IOException {
         // Copy the template's boot-manifest.mf file
         ZipInputStream zipIS = openOnejarTemplateArchive();
         Manifest manifest = new Manifest(getFileBytes(zipIS, "boot-manifest.mf"));
         IOUtils.closeQuietly(zipIS);
 
         Attributes mainAttributes = manifest.getMainAttributes();
-        // add explicitly specified manifest entries
-        if (manifestEntries != null) {
-	        for (Entry<String, String> entry : manifestEntries.entrySet()) {
-	        	if (getLog().isDebugEnabled()) {
-	                getLog().debug("adding entry ["+entry.getKey()+":"+entry.getValue()+"] to the one-jar manifest");
-	        	}
-	        	mainAttributes.putValue(entry.getKey(), entry.getValue());
-	        }
-        }
+        // first add the custom specified entries
+        addExplicitManifestEntries(mainAttributes);
 
         // If the client has specified an implementationVersion argument, add it also
         // (It's required and defaulted, so this always executes...)
@@ -294,19 +327,62 @@ public class OneJarMojo extends AbstractMojo {
         // some for "implemenation-version", and others use various capitalizations of these two.  It's likely that a
         // better solution then this "brute-force" bit here is to allow clients to configure these entries from the
         // Maven POM.
-        if (mainAttributes.getValue(requiredManifestVersionKey) == null) {
-			manifest.getMainAttributes().putValue(requiredManifestVersionKey, implementationVersion);
-        }
+        setRequired(mainAttributes,
+        		new AttributeEntry(MF_REQUIRED_IMPL_VERSION, implementationVersion),
+        		MF_REQUIRED_IMPL_VERSION);
+
+        // If the client has specified a splashScreen argument, add the proper entry to the manifest
+        setOptional(splashScreen, mainAttributes,
+        		new AttributeEntry(MF_OPTION_SPLASH_SCREEN_IMAGE, splashScreen),
+        		MF_OPTION_SPLASH_SCREEN_IMAGE);
+        
         // If the client has specified a mainClass argument, add the proper entry to the manifest
         // to be backwards compatible, add mainclass as simple option when not already set in manifestEntries
-        if (mainAttributes.getValue(oldOptionMainClassKey) == null && mainClass != null) {
-			manifest.getMainAttributes().putValue(oldOptionMainClassKey, mainClass);
-        }
+        setOptional(mainClass, mainAttributes,
+        		new AttributeEntry(MF_OPTION_MAIN_CLASS, mainClass),
+        		MF_OPTION_MAIN_CLASS);
 
         return manifest;
     }
 
-    // ----- Zip-file manipulations ------------------------------------------------------------------------------------
+    private void setRequired(Attributes mainAttributes,
+			AttributeEntry keyPairToSet, String... entryNamesForValue) {
+    	// just call as if it were optional, but always applies
+    	setOptional(Boolean.TRUE, mainAttributes, keyPairToSet, entryNamesForValue);
+	}
+
+	/**
+     * Adds option to manifest entries, if applicable.
+     * @param optionToCheck to perform null check, if null then nothing added
+     * @param mainAttributes to add to
+     * @param keyPairToSet both the key and value to add if applicable
+     * @param entryNamesForValue keys to look for to prevent duplicating or overwriting keys
+     */
+    private void setOptional(Object optionToCheck, Attributes mainAttributes, AttributeEntry keyPairToSet,
+			String... entryNamesForValue) {
+		if (optionToCheck != null) {
+			for (String keyToCheck : entryNamesForValue) {
+				if (mainAttributes.containsKey(keyToCheck)) {
+					// key is already set, don't override
+					return;
+				}
+			}
+			// if key not found, add it
+			mainAttributes.putValue(keyPairToSet.getKey(), keyPairToSet.getValue());
+		}
+	}
+
+	private void addExplicitManifestEntries(Attributes mainAttributes) {
+    	// add explicitly specified manifest entries
+        if (manifestEntries != null) {
+	        for (Entry<String, String> entry : manifestEntries.entrySet()) {
+	        	debug("adding entry [%s:%s] to the one-jar manifest", entry.getKey(), entry.getValue());
+	        	mainAttributes.putValue(entry.getKey(), entry.getValue());
+	        }
+        }
+	}
+
+	// ----- Zip-file manipulations ------------------------------------------------------------------------------------
 
     private void addToZip(File sourceFile, String zipfilePath, JarOutputStream out) throws IOException {
         addToZip(out, new ZipEntry(zipfilePath + sourceFile.getName()), new FileInputStream(sourceFile));
@@ -384,7 +460,8 @@ public class OneJarMojo extends AbstractMojo {
         return files;
     }
 
-    private static List<File> toFileList(FileSet fileSet)
+    @SuppressWarnings("unchecked")
+	private static List<File> toFileList(FileSet fileSet)
             throws IOException {
         File directory = new File(fileSet.getDirectory());
         String includes = toString(fileSet.getIncludes());
@@ -403,4 +480,18 @@ public class OneJarMojo extends AbstractMojo {
         return sb.toString();
     }
 
+    private void error(IOException e) {
+		getLog().error(e);
+	}
+
+	private void debug(String msgTemplate, Object... values) {
+    	if (getLog().isDebugEnabled()) {
+            getLog().debug(String.format(msgTemplate, values));
+        }
+	}
+
+    private void info(String msgTemplate, Object... values) {
+        getLog().info(String.format(msgTemplate, values));
+	}
+    
 }

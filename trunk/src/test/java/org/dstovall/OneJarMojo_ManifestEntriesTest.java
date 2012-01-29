@@ -1,9 +1,7 @@
 package org.dstovall;
 
-import java.io.File;
 import java.util.HashMap;
 
-import org.codehaus.plexus.util.ReflectionUtils;
 import org.junit.Test;
 
 public class OneJarMojo_ManifestEntriesTest {
@@ -16,38 +14,15 @@ public class OneJarMojo_ManifestEntriesTest {
 	
 	@Test
 	public void whenManifestEntriesSpecifiedThenNoFailure() throws Exception {
-		MojoUnderTest mojo = new MojoUnderTest();
+		TestableMojo mojo = new TestableMojo().useDefaultTestArtifact();
 		mojo.set("manifestEntries", new HashMap<String, String>());
 		mojo.execute();
 	}
 	
 	@Test
 	public void whenManifestEntriesMissingThenNoFailure() throws Exception {
-		MojoUnderTest mojo = new MojoUnderTest();
+		TestableMojo mojo = new TestableMojo().useDefaultTestArtifact();
 		mojo.execute();
-	}
-
-	class MojoUnderTest extends OneJarMojo {
-		public MojoUnderTest() {
-			String defaultFinalName = "default-finalname";
-			File tempOutput = new File(System.getProperty("java.io.tmpdir")+"/one-jar/");
-			tempOutput.mkdirs();
-			tempOutput.deleteOnExit();
-			
-			// setting required field that have defaults
-			set("outputDirectory", tempOutput);
-			set("filename", defaultFinalName);
-			set("mainJarFilename", defaultFinalName);
-			set("onejarVersion", "0.97");
-		}
-		
-		void set(String optionName, Object value) {
-			try {
-				ReflectionUtils.setVariableValueInObject(this, optionName, value);
-			} catch (IllegalAccessException e) {
-				throw new RuntimeException(e.getMessage(), e);
-			}
-		}
 	}
 	
 }

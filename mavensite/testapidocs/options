@@ -1,0 +1,26 @@
+-classpath
+'C:/eclipse/eclipse-3.5/workspaces/com.simontuffs.one-jar.branch_0_9_7/one-jar-mvn-plugin.googlecode.com/trunk/target/classes;C:/eclipse/eclipse-3.5/workspaces/com.simontuffs.one-jar.branch_0_9_7/one-jar-mvn-plugin.googlecode.com/trunk/target/test-classes;C:/Users/simon/.m2/repository/org/apache/maven/maven-profile/2.0.11/maven-profile-2.0.11.jar;C:/Users/simon/.m2/repository/org/codehaus/plexus/plexus-container-default/1.0-alpha-9-stable-1/plexus-container-default-1.0-alpha-9-stable-1.jar;C:/Users/simon/.m2/repository/org/apache/maven/maven-repository-metadata/2.0.11/maven-repository-metadata-2.0.11.jar;C:/Users/simon/.m2/repository/org/apache/maven/maven-artifact-manager/2.0.11/maven-artifact-manager-2.0.11.jar;C:/Users/simon/.m2/repository/org/apache/maven/maven-plugin-registry/2.0.11/maven-plugin-registry-2.0.11.jar;C:/Users/simon/.m2/repository/org/codehaus/plexus/plexus-interpolation/1.1/plexus-interpolation-1.1.jar;C:/Users/simon/.m2/repository/org/apache/maven/maven-project/2.0.11/maven-project-2.0.11.jar;C:/Users/simon/.m2/repository/junit/junit/4.10/junit-4.10.jar;C:/Users/simon/.m2/repository/org/apache/maven/maven-settings/2.0.11/maven-settings-2.0.11.jar;C:/Users/simon/.m2/repository/commons-io/commons-io/1.3.1/commons-io-1.3.1.jar;C:/Users/simon/.m2/repository/org/apache/maven/maven-plugin-api/2.0.11/maven-plugin-api-2.0.11.jar;C:/Users/simon/.m2/repository/org/apache/maven/maven-artifact/2.0.11/maven-artifact-2.0.11.jar;C:/Users/simon/.m2/repository/org/apache/maven/wagon/wagon-provider-api/1.0-beta-2/wagon-provider-api-1.0-beta-2.jar;C:/Users/simon/.m2/repository/classworlds/classworlds/1.1-alpha-2/classworlds-1.1-alpha-2.jar;C:/Users/simon/.m2/repository/org/hamcrest/hamcrest-core/1.1/hamcrest-core-1.1.jar;C:/Users/simon/.m2/repository/org/codehaus/plexus/plexus-utils/1.5.6/plexus-utils-1.5.6.jar;C:/Users/simon/.m2/repository/org/apache/maven/maven-model/2.0.11/maven-model-2.0.11.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'C:/eclipse/eclipse-3.5/workspaces/com.simontuffs.one-jar.branch_0_9_7/one-jar-mvn-plugin.googlecode.com/trunk/src/test/java'
+-author
+-bottom
+'Copyright &#169; 2007-2012. All Rights Reserved.'
+-charset
+'UTF-8'
+-d
+'C:/eclipse/eclipse-3.5/workspaces/com.simontuffs.one-jar.branch_0_9_7/one-jar-mvn-plugin.googlecode.com/trunk/target/site/testapidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'One-Jar Maven Plugin 1.4.5-SNAPSHOT Test API'
+-link
+'../apidocs'
+-linkoffline
+'http://download.oracle.com/javase/6/docs/api' 'C:/eclipse/eclipse-3.5/workspaces/com.simontuffs.one-jar.branch_0_9_7/one-jar-mvn-plugin.googlecode.com/trunk/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'One-Jar Maven Plugin 1.4.5-SNAPSHOT Test API'
